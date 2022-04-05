@@ -17,7 +17,6 @@ jobs:
         with:
           images: rawb1/caddy-hcp
           tags: |
-            type=ref,event=tag
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}
       - name: Set up QEMU
