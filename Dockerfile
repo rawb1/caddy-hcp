@@ -1,15 +1,22 @@
-FROM caddy:2.3.0-builder AS builder
+ARG VERSION
 
-RUN xcaddy build \
-    --with github.com/pteich/caddy-tlsconsul \
-    --with github.com/greenpau/caddy-auth-portal
+FROM caddy:$VERSION-builder-alpine AS builder
 
-FROM caddy:2.3.0-alpine
+RUN xcaddy build --with github.com/pteich/caddy-tlsconsul
+
+FROM caddy:$VERSION-alpine
 
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 
-# Override the entrypoint with a bash script which handles SIGHUP and triggers reload
 RUN apk add --no-cache tini
+
 COPY signal-handler.sh /
+
+# Override the entrypoint with a bash script which handles SIGHUP and triggers reload
 ENTRYPOINT ["/sbin/tini", "--"]
-CMD ["/signal-handler.sh", "caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
+
+ENV CADDYFILE_PATH /etc/caddy/Caddyfile
+
+ENV ADAPTER caddyfile
+
+CMD ["/signal-handler.sh", "caddy", "run", "--config", "echo ${CADDYFILE_PATH}", "--adapter", "echo ${ADAPTER}"]
