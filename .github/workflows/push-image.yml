@@ -2,8 +2,6 @@ name: push-image
 
 on:
   push:
-    branches:
-      - "master"
     tags:
       - "v*"
 
