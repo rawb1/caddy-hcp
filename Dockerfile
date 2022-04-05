@@ -19,4 +19,4 @@ ENV CADDYFILE_PATH /etc/caddy/Caddyfile
 
 ENV ADAPTER caddyfile
 
-CMD ["/signal-handler.sh", "caddy", "run", "--config", "echo ${CADDYFILE_PATH}", "--adapter", "echo ${ADAPTER}"]
+CMD /signal-handler.sh caddy run --config $CADDYFILE_PATH --adapter $ADAPTER
