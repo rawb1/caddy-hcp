@@ -16,7 +16,7 @@ I will push new tags based on the official [caddy image](https://hub.docker.com/
 
 ## Example Nomad HCL config file
 
-```json
+```HCL
 job "caddy" {
   datacenters = ["dc1"]
 
